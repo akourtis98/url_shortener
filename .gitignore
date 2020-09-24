@@ -2,3 +2,4 @@
 .env
 .queries.js
 .vscode
+package-lock.json
