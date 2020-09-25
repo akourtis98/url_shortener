@@ -27,6 +27,8 @@ OR
 
 > npm run dev
 
+Please reach out to me at [akourtisdev@gmail.com](mailto:akourtisdev@gmail.com), for any help in building the project.
+
 ---
 
 ## Other info:
