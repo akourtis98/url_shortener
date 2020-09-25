@@ -1,13 +1,17 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const shortUrl = require("./models/shortUrl");
+const shortId = require("shortid");
+const {
+  connectToDB,
+  getUrls,
+  addUrl,
+  getUrl,
+  getFullUrlByShortUrl,
+  deleteById,
+} = require("./config/database");
 
-const { db, getUrls, addUrl } = require("./config/database");
-
-db.authenticate()
-  .then(() => console.log("Database connect"))
-  .catch((err) => console.log("err" + err));
+connectToDB();
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -16,19 +20,34 @@ app.set("views", "./views");
 
 app.get("/", async (req, res) => {
   const shortUrls = await getUrls();
-  res.render("index", { shortUrls: shortUrls });
+  res.render("index", { urls: shortUrls });
 });
 
-app.post("/shortUrls", async (req, res) => {
-  // make new entry
-  await shortUrl.create({ full: req.body.fullUrl });
-  // return new url
+app.get("/get/:shorturl", async (req, res) => {
+  const fullUrl = await getUrl(req.params.shorturl);
+  res.render("index", { urls: fullUrl });
+});
+
+app.post("/add/url", async (req, res) => {
+  // no models
+  const fullUrl = req.body.fullUrl;
+  const shortUrl = shortId.generate();
+  const created = new Date().toISOString().slice(0, 10);
+
+  await addUrl(fullUrl, shortUrl, created);
+  const urls = await getUrls();
+
   res.redirect("/");
 });
 
-// route for getting long link by giving short link
+app.delete("/delete/:id", async (req, res) => {
+  await deleteById(req.params.id);
+  res.redirect(url);
+});
 
-app.listen(
-  process.env.PORT || 5000,
-  console.log("server listening at port 5000")
-);
+app.get("/:shorturl", async (req, res) => {
+  const url = await getFullUrlByShortUrl(req.params.shorturl);
+  res.redirect(url);
+});
+
+app.listen(process.env.PORT || 5000);

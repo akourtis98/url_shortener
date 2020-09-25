@@ -4,36 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=Hello World, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title>Document</title>
+
+    <style>
+        td {
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <h1>URL Shortener</h1>
-        <form class="my-4 form-inline" action="/shortUrls" method="POST">
+        <form class="my-4 form-inline" action="/add/url" method="POST">
             <label for="fullUrl" class="sr-only">Url:</label>
             <input placeholder="Enter url here" class="form-control mr-2 col" required type="url" name="fullUrl"
                 id="fullUrl">
-            <button type="submit" class="btn btn-success">Shorten</button>
+            <button type="submit" class="btn btn-info">Shorten</button>
         </form>
 
-        <table class="table table-striped table-responsive">
-            <thead>
-                <th>Full Url</th>
-                <th>Short Url</th>
+        <table style="  table-layout: fixed;" class="table ">
+            <thead class="thead-dark">
+                <th scope="col">Full Url</th>
+                <th scope="col">Short Url</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Action</th>
             </thead>
             <tbody>
-                <% shortUrls.forEach(shortUrl => { %>
+                <% urls.forEach(url => { %>
                 <tr>
-                    <td><a href="<%= shortUrl.fullUrl %>"><%= shortUrl.fullUrl %></a></td>
-                    <td><a href="<%= shortUrl.shortUrl %>"><%= shortUrl.shortUrl %></a></td>
+                    <td><a href="<%= url.fullUrl %>"><%= url.fullUrl %></a></td>
+                    <td><a href="<%= url.shortUrl %>"><%= url.shortUrl %></a></td>
+                    <td><a><%= url.created.toString().split('T')[0]; %></a></td>
+                    <td>
+                        <a onclick="deleteFunc('<%= url.id %>')" href=""> <i class="material-icons">delete</i> </a>
+                    </td>
                 </tr>
                 <% }) %>
             </tbody>
         </table>
     </div>
+
+    <script>
+
+        function deleteFunc(id) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('DELETE', '/delete/' + id);
+
+            xhr.send();
+            xhr.onload = function () {
+                if (xhr.status != 200) {
+                    alert(`Error ${xhr.status}: ${xhr.statusText}`);
+                } else {
+                    alert(`Done, got ${xhr.response.length} bytes`);
+                }
+            };
+
+            xhr.onprogress = function (event) {
+                if (event.lengthComputable) {
+                    alert(`Received ${event.loaded} of ${event.total} bytes`);
+                } else {
+                    alert(`Received ${event.loaded} bytes`);
+                }
+            };
+
+            xhr.onerror = function () {
+                alert("Request failed");
+            };
+        }
+    </script>
 </body>
 
 </html>
