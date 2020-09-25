@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const app = express();
 const shortId = require("shortid");
@@ -35,7 +34,6 @@ app.post("/add/url", async (req, res) => {
   const created = new Date().toISOString().slice(0, 10);
 
   await addUrl(fullUrl, shortUrl, created);
-  const urls = await getUrls();
 
   res.redirect("/");
 });

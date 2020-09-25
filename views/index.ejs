@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <title>Document</title>
+    <title>URL Shortener</title>
 
     <style>
         td {
@@ -18,34 +18,46 @@
 
 <body>
     <div class="container">
-        <h1>URL Shortener</h1>
-        <form class="my-4 form-inline" action="/add/url" method="POST">
-            <label for="fullUrl" class="sr-only">Url:</label>
-            <input placeholder="Enter url here" class="form-control mr-2 col" required type="url" name="fullUrl"
-                id="fullUrl">
-            <button type="submit" class="btn btn-info">Shorten</button>
-        </form>
+        <div style="min-height: 500px;">
+            <br>
+            <br>
+            <h2>URL Shortener</h2>
+            <form class="my-4 form-inline" action="/add/url" method="POST">
+                <label for="fullUrl" class="sr-only">Url:</label>
+                <input placeholder="Enter url here" class="form-control mr-2 col" required type="url" name="fullUrl"
+                    id="fullUrl">
+                <button type="submit" class="btn btn-info">Shorten</button>
+            </form>
 
-        <table style="  table-layout: fixed;" class="table ">
-            <thead class="thead-dark">
-                <th scope="col">Full Url</th>
-                <th scope="col">Short Url</th>
-                <th scope="col">Date Added</th>
-                <th scope="col">Action</th>
-            </thead>
-            <tbody>
-                <% urls.forEach(url => { %>
-                <tr>
-                    <td><a href="<%= url.fullUrl %>"><%= url.fullUrl %></a></td>
-                    <td><a href="<%= url.shortUrl %>"><%= url.shortUrl %></a></td>
-                    <td><a><%= url.created.toString().split('T')[0]; %></a></td>
-                    <td>
-                        <a onclick="deleteFunc('<%= url.id %>')" href=""> <i class="material-icons">delete</i> </a>
-                    </td>
-                </tr>
-                <% }) %>
-            </tbody>
-        </table>
+            <table style="table-layout: fixed;" class="table ">
+                <thead class="thead-dark">
+                    <th scope="col">Full Url</th>
+                    <th scope="col">Short Url</th>
+                    <th scope="col">Date Added</th>
+                    <th scope="col">Action</th>
+                </thead>
+                <tbody>
+                    <% urls.forEach(url => { %>
+                    <tr>
+                        <td><a href="<%= url.fullUrl %>"><%= url.fullUrl %></a></td>
+                        <td><a href=<%= url.shortUrl %>>http://localhost:5000/<%= url.shortUrl %></a></td>
+                        <td><a><%= url.created.toString().split('T')[0]; %></a></td>
+                        <td>
+                            <a onclick="deleteFunc('<%= url.id %>')" href=""> <i class="material-icons">delete</i> </a>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <footer class="page-footer font-small blue">
+
+            <div class="footer-copyright text-center py-3">© 2020 made by:
+                <a href="http://github.com/akourtis98"> alexandros kourtis</a>
+            </div>
+            <!-- Copyright -->
+
+        </footer>
     </div>
 
     <script>
