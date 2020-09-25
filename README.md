@@ -27,6 +27,10 @@ OR
 
 > npm run dev
 
+---
+
+## Other info:
+
 It is is a nice little project.
 
 Eventually, I would like to add these new features:
